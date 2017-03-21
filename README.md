@@ -1,1 +1,20 @@
 # asteroid-defense
+Requirements:
+
+Earth is being bombarded by asteroids and it’s your job to destroy them before they cause damage. You control a huge turret that can fire missiles at any asteroids that would come within a designated safety zone. 
+
+* The simulation runs in a 2D top-down environment. For the purpose of this exercise, you can completely ignore the effect of gravity.
+* Earth (and the turret) are located at the center of the screen.
+* The player can “throw" asteroids towards earth (e.g. by dragging with mouse)
+* When a new asteroid is spawned, the turret needs to check if the trajectory comes within the safety zone.
+* If the asteroid would come too close, the turret needs to fire a missile, which intercepts the asteroid.
+
+Your working implementation should include two methods with the following (or similar) signatures:
+* bool TrajectoryWithinSafetyZone(Vector3 asteroidPosition, Vector3 asteroidVelocity)
+* Vector3 CalculateMissileVelocity(Vector3 asteroidPosition, Vector3 asteroidVelocity)
+
+Here are some other facts about the scenario:
+* The turret can fire immediately into any direction. There is no targeting delay.
+* The turret must fire immediately when a new (dangerous) asteroid is spawned.
+* As there is no gravity, the velocity of an asteroid stays constant after it has been spawned.
+* Missiles are always launched with a constant speed S. You only decide the angle of the velocity vector - not its magnitude.
