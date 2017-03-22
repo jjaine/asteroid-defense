@@ -18,7 +18,7 @@ public class SpawnAsteroid : MonoBehaviour {
 			float y = RandomPosY();
 			float x = RandomPosX(y);
 			GameObject asteroidInstance = Instantiate(asteroid, new Vector3(x,y,0), Quaternion.identity);
-			asteroidInstance.GetComponent<Rigidbody2D>().velocity = new Vector3(RandomVelocityX(x), RandomVelocityY(y), 0);
+			asteroidInstance.GetComponent<Rigidbody2D>().velocity = new Vector3(VelocityX(x), VelocityY(y), 0);
 			asteroidInstance.GetComponent<AsteroidControl>().id=id;
 			id++;
 			asteroidCount++;
@@ -34,23 +34,22 @@ public class SpawnAsteroid : MonoBehaviour {
 
      	return posy;
 	}
-	
 
 	float RandomPosX(float y){
 		float posx = 0;
 		if(y>=-4.0f && y<=4.0f){
 			int i = Random.Range(0,2);
-			if(i==1) posx = 9f;
-			else posx = -9f;
+			if(i==1) posx = 8f;
+			else posx = -8f;
 		}
 		else
-			posx = Random.Range(-9f, 9f);
+			posx = Random.Range(-6f, 6f);
 
      	return posx;
 	}
 
-	float RandomVelocityX(float x){
-		float vel = Random.Range(2.0f,4.0f);
+	float VelocityX(float x){
+		float vel = Random.Range(1.0f,4.0f);
 
      	if(x > 2)
      		vel*=-1;
@@ -58,8 +57,8 @@ public class SpawnAsteroid : MonoBehaviour {
      	return vel;
 	}
 
-	float RandomVelocityY(float y){
-		float vel = Random.Range(2.0f,4.0f);
+	float VelocityY(float y){
+		float vel = Random.Range(1.0f,4.0f);
 
      	if(y > 2)
      		vel*=-1;

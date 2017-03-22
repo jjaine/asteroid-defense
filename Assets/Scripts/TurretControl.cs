@@ -9,7 +9,7 @@ public class TurretControl : MonoBehaviour {
 	GameObject asteroid;
 
 	public GameObject cannonBall;
-	float speed = 5.0f;
+	float speed = 6.0f;
 
 	void Start () {
 		shotAsteroids = new List<int>();

@@ -7,6 +7,12 @@ public class AsteroidControl : MonoBehaviour {
 	public bool willHit = false;
 	public GameObject explosion;
 	
+	void Start(){
+		willHit = TrajectoryWithinSafetyZone(transform.position, GetComponent<Rigidbody2D>().velocity);
+		if(!willHit)
+			gameObject.GetComponent<Collider2D>().enabled=false;
+	}
+
 	void Update () {
 
 		Physics2D.IgnoreLayerCollision(8,8,true);
@@ -17,8 +23,6 @@ public class AsteroidControl : MonoBehaviour {
 			Destroy(gameObject);
 			SpawnAsteroid.asteroidCount--;
 		}
-
-		willHit = TrajectoryWithinSafetyZone(transform.position, GetComponent<Rigidbody2D>().velocity);
 	}
 
 	void OnCollisionEnter2D(Collision2D col)
@@ -26,8 +30,6 @@ public class AsteroidControl : MonoBehaviour {
 		Collider2D collider = col.collider;
 
 		if (collider.tag == "CannonBall") { 
-			Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collider, !willHit);
-
 			GameObject exp = Instantiate(explosion, transform.position, Quaternion.identity);
 			Destroy(gameObject);
 			Destroy(collider.gameObject);
