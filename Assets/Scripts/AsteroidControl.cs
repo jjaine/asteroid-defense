@@ -12,13 +12,13 @@ public class AsteroidControl : MonoBehaviour {
 		Physics2D.IgnoreLayerCollision(8,8,true);
 		Physics2D.IgnoreLayerCollision(8,9,true);
 
-		if(gameObject.transform.position.x > 10 || gameObject.transform.position.x < -10 
-			|| gameObject.transform.position.y > 6 || gameObject.transform.position.y < -6){
+		if(transform.position.x > 10 || transform.position.x < -10 
+			|| transform.position.y > 6 || transform.position.y < -6){
 			Destroy(gameObject);
 			SpawnAsteroid.asteroidCount--;
 		}
 
-		willHit = TrajectoryWithinSafetyZone(gameObject.transform.position, gameObject.GetComponent<Rigidbody2D>().velocity);
+		willHit = TrajectoryWithinSafetyZone(transform.position, GetComponent<Rigidbody2D>().velocity);
 	}
 
 	void OnCollisionEnter2D(Collision2D col)
@@ -26,6 +26,8 @@ public class AsteroidControl : MonoBehaviour {
 		Collider2D collider = col.collider;
 
 		if (collider.tag == "CannonBall") { 
+			Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collider, !willHit);
+
 			GameObject exp = Instantiate(explosion, transform.position, Quaternion.identity);
 			Destroy(gameObject);
 			Destroy(collider.gameObject);

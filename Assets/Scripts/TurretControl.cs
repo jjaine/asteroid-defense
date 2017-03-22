@@ -5,11 +5,11 @@ using UnityEngine;
 public class TurretControl : MonoBehaviour {
 	GameObject[] objects;
 	List<GameObject> asteroids;
-	GameObject asteroid;
-	public GameObject cannonBall;
-	bool shot = false;
-	float speed = 5.0f;
 	List<int> shotAsteroids;
+	GameObject asteroid;
+
+	public GameObject cannonBall;
+	float speed = 5.0f;
 
 	void Start () {
 		shotAsteroids = new List<int>();
@@ -57,7 +57,7 @@ public class TurretControl : MonoBehaviour {
 	}
 
 	void FollowAsteroid(GameObject asteroid){
-		Vector3 dir = asteroid.transform.position - gameObject.transform.position;
+		Vector3 dir = asteroid.transform.position - transform.position;
 		//Matf.Atan2: return value is the angle between the x-axis 
 		//and a 2D vector starting at zero and terminating at (x,y).
 		float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
@@ -68,7 +68,7 @@ public class TurretControl : MonoBehaviour {
 	GameObject closest(List<GameObject> asteroids){
 	    GameObject c = null;
 	    float minDist = Mathf.Infinity;
-	    Vector3 currentPos = gameObject.transform.position;
+	    Vector3 currentPos = transform.position;
 	    foreach (GameObject a in asteroids)
 	    {
 	        float dist = Vector3.Distance(a.transform.position, currentPos);

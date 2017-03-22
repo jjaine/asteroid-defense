@@ -13,40 +13,56 @@ public class SpawnAsteroid : MonoBehaviour {
 	}
 	
 	void Update () {
-		//always have 5 asteroids
-		if(asteroidCount<5){
-			GameObject asteroidInstance = Instantiate(asteroid, new Vector3(RandomPosX(), RandomPosY(), 0), Quaternion.identity);
-			asteroidInstance.GetComponent<Rigidbody2D>().velocity = new Vector3(RandomVelocity(), RandomVelocity(), 0);
+		//always have 6 asteroids
+		if(asteroidCount<6){
+			float y = RandomPosY();
+			float x = RandomPosX(y);
+			GameObject asteroidInstance = Instantiate(asteroid, new Vector3(x,y,0), Quaternion.identity);
+			asteroidInstance.GetComponent<Rigidbody2D>().velocity = new Vector3(RandomVelocityX(x), RandomVelocityY(y), 0);
 			asteroidInstance.GetComponent<AsteroidControl>().id=id;
 			id++;
 			asteroidCount++;
 		}
 	}
 
-	//-5 to -2.5, +2.5 +5, not on the safe zone 
+	//-5 to -2, +2 to +5
 	float RandomPosY(){
-		float posy = Random.Range(2.5f,7.5f);
-		//map values > 5 to range -5 to -2.5
+		float posy = Random.Range(2f,8f);
+		//map values > 5 to negative range
  		if (posy > 5)
-     		posy = 2.5f-posy;
+     		posy = 3-posy;
 
      	return posy;
 	}
+	
 
-	//-9 to -2.5, +2.5 to 9, not on the safe zone
-	float RandomPosX(){
-		float posx = Random.Range(2.5f,16.5f);
- 		if (posx > 9)
-     		posx = 7.5f-posx;
+	float RandomPosX(float y){
+		float posx = 0;
+		if(y>=-4.0f && y<=4.0f){
+			int i = Random.Range(0,2);
+			if(i==1) posx = 9f;
+			else posx = -9f;
+		}
+		else
+			posx = Random.Range(-9f, 9f);
 
      	return posx;
 	}
 
-	//-3 to -1, 1 to 3
-	float RandomVelocity(){
-		float vel = Random.Range(1.0f,5.0f);
- 		if (vel > 3)
-     		vel = 2-vel;
+	float RandomVelocityX(float x){
+		float vel = Random.Range(2.0f,4.0f);
+
+     	if(x > 2)
+     		vel*=-1;
+
+     	return vel;
+	}
+
+	float RandomVelocityY(float y){
+		float vel = Random.Range(2.0f,4.0f);
+
+     	if(y > 2)
+     		vel*=-1;
 
      	return vel;
 	}
