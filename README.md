@@ -1,4 +1,10 @@
 # asteroid-defense
+
+Known bugs:
+* Missiles might hit another target while they are on their way to their primary one
+* Unity's Update is not quite fast enough to handle fast mouse movements, so asteroids the player has dragged may sometimes get the wrong direction because calculation was too late
+* Asteroid will be shot at only once, so if shot at and then player changes direction before hit, turret won't shoot again
+
 Requirements:
 
 Earth is being bombarded by asteroids and it’s your job to destroy them before they cause damage. You control a huge turret that can fire missiles at any asteroids that would come within a designated safety zone. 

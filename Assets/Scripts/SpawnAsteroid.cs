@@ -25,6 +25,8 @@ public class SpawnAsteroid : MonoBehaviour {
 		}
 	}
 
+	//generate random positions and velocities for asteroids:
+
 	//-5 to -2, +2 to +5
 	float RandomPosY(){
 		float posy = Random.Range(2f,8f);
@@ -37,7 +39,7 @@ public class SpawnAsteroid : MonoBehaviour {
 
 	float RandomPosX(float y){
 		float posx = 0;
-		if(y>=-4.0f && y<=4.0f){
+		if(y>=-3.5f && y<=3.5f){
 			int i = Random.Range(0,2);
 			if(i==1) posx = 8f;
 			else posx = -8f;

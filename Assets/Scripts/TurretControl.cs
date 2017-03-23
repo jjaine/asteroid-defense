@@ -34,8 +34,8 @@ public class TurretControl : MonoBehaviour {
 
 	}
 
+	//get asteroids that are marked as willhit
 	List<GameObject> hits(GameObject[] asteroids){
-	    
 	    List<GameObject> hitAsteroids = new List<GameObject>();
 
 	    foreach (GameObject a in asteroids)
@@ -47,15 +47,16 @@ public class TurretControl : MonoBehaviour {
 	    return hitAsteroids;
 	}
 
+	//shoot the asteroids
 	void shoot(GameObject asteroid){
 		Vector3 dir = CalculateMissileVelocity(asteroid.transform.position, asteroid.GetComponent<Rigidbody2D>().velocity, new Vector3(0,0,0));
 		dir = new Vector3(dir.x, dir.y, 0).normalized;
-		Vector3 pos = new Vector3(dir.x*0.1f, dir.y*0.1f, 0);
-		GameObject ballInstance = Instantiate(cannonBall, pos, Quaternion.identity);
+		GameObject ballInstance = Instantiate(cannonBall, dir, Quaternion.identity);
 
 		ballInstance.GetComponent<Rigidbody2D>().velocity = new Vector3(speed*dir.x, speed*dir.y, 0);
 	}
 
+	//look towards the asteroid
 	void FollowAsteroid(GameObject asteroid){
 		Vector3 dir = asteroid.transform.position - transform.position;
 		//Matf.Atan2: return value is the angle between the x-axis 
@@ -65,45 +66,32 @@ public class TurretControl : MonoBehaviour {
 		transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 	}
 
-	GameObject closest(List<GameObject> asteroids){
-	    GameObject c = null;
-	    float minDist = Mathf.Infinity;
-	    Vector3 currentPos = transform.position;
-	    foreach (GameObject a in asteroids)
-	    {
-	        float dist = Vector3.Distance(a.transform.position, currentPos);
-	        if (dist < minDist){
-	            c = a;
-	            minDist = dist;
-	        }
-	    }
-	    return c;
-	}
-
+	//calculate at which spot the collision will happen and shoot there
 	Vector3 CalculateMissileVelocity(Vector3 asteroidPosition, Vector3 asteroidVelocity, Vector3 turretPos){
-		Vector3 targetDir = asteroidPosition - turretPos;
-	    float iSpeed2 = speed * speed;
-	    float tSpeed2 = asteroidVelocity.sqrMagnitude;
-	    float fDot1 = Vector3.Dot(targetDir, asteroidVelocity);
-	    float targetDist2 = targetDir.sqrMagnitude;
-	    float d = (fDot1 * fDot1) - targetDist2 * (tSpeed2 - iSpeed2);
-	    if (d < 0.1f)  // cannot intercept :(
-	        return Vector3.zero;
-	    float sqrt = Mathf.Sqrt(d);
-	    float S1 = (-fDot1 - sqrt) / targetDist2;
-	    float S2 = (-fDot1 + sqrt) / targetDist2;
-	    if (S1 < 0.0001f)
-	    {
-	        if (S2 < 0.0001f)
-	            return Vector3.zero;
-	        else
-	            return (S2) * targetDir + asteroidVelocity;
-	    }
-	    else if (S2 < 0.0001f)
-	        return (S1) * targetDir + asteroidVelocity;
-	    else if (S1 < S2)
-	        return (S2) * targetDir + asteroidVelocity;
-	    else
-	        return (S1) * targetDir + asteroidVelocity;
+		/* solved from t = (|a+t*v-w|)/s, where
+		 * t = constant, time
+		 * a = vector to asteroid position from origo
+		 * v = asteroid's velocity
+		 * w = vector to world's position from origo
+		 and the |a+t*v-w| comes from the impact point from the world's point of view:
+		 * go to origo -w
+		 * go to asteroid +a
+		 * go to impact point +t*v
+		 */
+
+		Vector3 dir = asteroidPosition - transform.position;
+		float A = asteroidVelocity.sqrMagnitude - speed * speed;
+		float B = 2 * Vector3.Dot (dir, asteroidVelocity);
+		float C = dir.sqrMagnitude;
+		if (A >= 0) {
+			float dt = (-C)/(2*B);
+			return asteroidPosition + asteroidVelocity * dt;
+		} else {
+			float rt = Mathf.Sqrt (B*B - 4*A*C);
+			float dt1 = (-B + rt) / (2 * A);
+			float dt2 = (-B - rt) / (2 * A);
+			float dt = (dt1 < 0 ? dt2 : dt1);
+			return asteroidPosition + asteroidVelocity * dt;
+ 		}
 	}
 }
