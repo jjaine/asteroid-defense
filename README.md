@@ -1,9 +1,9 @@
 # asteroid-defense
 
 Known bugs:
-* Missiles might hit another target while they are on their way to their primary one
+* Missiles might hit another target while they are on their way to their primary one, could be fixed by targeting the missile only to a certain asteroid id
 * Unity's Update is not quite fast enough to handle fast mouse movements, so asteroids the player has dragged may sometimes get the wrong direction because calculation was too late
-* Asteroid will be shot at only once, so if shot at and then player changes direction before hit, turret won't shoot again
+* Asteroid will be shot at only once, so if shot at and then player changes direction before hit, turret won't shoot again, could be fixed by checking after expected hit time if asteroid destroyed or not, and then shoot again if not
 
 Requirements:
 
